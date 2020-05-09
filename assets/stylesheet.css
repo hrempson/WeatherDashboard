@@ -1,0 +1,35 @@
+.navbar.bg-light {
+    background-color: gray !important;
+}
+.btn-outline-success {
+    color: white !important;
+    border-color: blue !important;
+}
+.navbar-light .navbar-brand {
+    color: white !important;
+}
+.table {
+    width: 200px !important;
+}
+.container-fluid {
+    padding-top: 15px;
+}
+.container-fluid {
+    display: inline-flex;
+}
+.card-body {
+    width: 100% !important;
+    text-align: center;
+}
+.card-text{
+    text-align: left;
+}
+.card{
+    border: transparent;
+}
+.forecast-body {
+    display: in-line;
+}
+.day{
+    display: inline-block;
+}
