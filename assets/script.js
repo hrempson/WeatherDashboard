@@ -9,19 +9,19 @@ $(".btn").on("click", function (event) {
     event.preventDefault();
     city = $(".search").val();
     var queryURL = `https://api.openweathermap.org/data/2.5/weather?q=${city}&appid=${apiKey}`;
-    
-// AJAX call to get weather info
-console.log(city);
-console.log(queryURL);
-$.ajax({
-        url: queryURL,
-        method: "GET"
-    })
-// Store the retrieved data in "response"
-    .then(function (response) {
+
+    // AJAX call to get weather info
+    console.log(city);
+    console.log(queryURL);
+    $.ajax({
+            url: queryURL,
+            method: "GET"
+        })
+        // Store the retrieved data in "response"
+        .then(function (response) {
             console.log(queryURL);
             console.log(response);
-    
+
             var iconURL = `http://openweathermap.org/img/wn/${response.weather[0].icon}@2x.png`;
             var tempF = (response.main.temp - 273.15) * 1.80 + 32;
             var date = (response.dt);
@@ -36,70 +36,71 @@ $.ajax({
 
             lon = response.coord.lon
             lat = response.coord.lat
-           
-// https://api.openweathermap.org/data/2.5/onecall?lat={lat}&lon={lon}&exclude={part}&appid={YOUR API KEY}
-if(lon === null || lat === null) {
-    throw new Error(`lon=${lon} && lat=${lat} on of these is null`);
-}
-var uvURL = `https://api.openweathermap.org/data/2.5/onecall?lat=${lat}&lon=${lon}&exclude=hourly&appid=${apiKey}`;
-$.ajax({
-    url: uvURL,
-    method: "GET"
-    })
 
-    .then(function (response) {
-    
-    var uvi = response.current.uvi;
-    // Using Wikipedia Ultraviolet Index https://en.wikipedia.org/wiki/Ultraviolet_index
-    if(uvi <= 3 ) {
-        $(".uviValue").addClass('badge-success');
-        $(".uviValue").removeClass('badge-danger');
-        $(".uviValue").removeClass('badge-warning');
-    }
-    else if (uvi > 3 && uvi < 6 ){
-        $(".uviValue").addClass('badge-warning');
-        $(".uviValue").removeClass('badge-danger');
-        $(".uviValue").removeClass('badge-success');
-    }
-    else {
-        $(".uviValue").removeClass('badge-warning');
-        $(".uviValue").addClass('badge-danger');
-        $(".uviValue").removeClass('badge-success');
-    }
+            // https://api.openweathermap.org/data/2.5/onecall?lat={lat}&lon={lon}&exclude={part}&appid={YOUR API KEY}
+            if (lon === null || lat === null) {
+                throw new Error(`lon=${lon} && lat=${lat} one of these is null`);
+            }
+            var uvURL = `https://api.openweathermap.org/data/2.5/onecall?lat=${lat}&lon=${lon}&exclude=hourly&appid=${apiKey}`;
+            $.ajax({
+                    url: uvURL,
+                    method: "GET"
+                })
 
-        
-        $(".uviValue").text(uvi);
-        
+                .then(function (response) {
+
+                    var uvi = response.current.uvi;
+                    // Using Wikipedia Ultraviolet Index https://en.wikipedia.org/wiki/Ultraviolet_index
+                    if (uvi <= 3) {
+                        $(".uviValue").addClass('badge-success');
+                        $(".uviValue").removeClass('badge-danger');
+                        $(".uviValue").removeClass('badge-warning');
+                    } else if (uvi > 3 && uvi < 6) {
+                        $(".uviValue").addClass('badge-warning');
+                        $(".uviValue").removeClass('badge-danger');
+                        $(".uviValue").removeClass('badge-success');
+                    } else {
+                        $(".uviValue").removeClass('badge-warning');
+                        $(".uviValue").addClass('badge-danger');
+                        $(".uviValue").removeClass('badge-success');
+                    }
+
+
+                    $(".uviValue").text(uvi);
+
+                })
+
+            var fiveDayURL = `https://api.openweathermap.org/data/2.5/onecall?lat=${lat}&lon=${lon}&exclude=hourly,minutely,current&appid=${apiKey}`
+
+            if (lon === null || lat === null) {
+                throw new Error(`lon=${lon} && lat=${lat} one of these is null`);
+            }
+
+            $.ajax({
+                    url: fiveDayURL,
+                    method: "GET"
+                })
+
+                .then(function (response) {
+                    // api.openweathermap.org/data/2.5/forecast/daily?q={city name}&cnt={cnt}&appid={your api key}
+                    var iconURL = `http://openweathermap.org/img/wn/${response.list[0].weather[0].icon}@2x.png`;
+                    var temp = (response.list[0].main.temp - 273.15) * 1.80 + 32;
+
+                    // for loop to create Daily Weather Cards...
+                    // TODO: Bootstrap Grid System, or Flexbox layout...
+                    // Template literals with multiple lines https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Template_literals
+        //             for (var i = 0; i < 40; i += 8) {
+        //                 $(".container-5-day").append(`
+        // <div class="card">
+        //     <div class="card-body">
+        //         <p class="card-title">${response.list[i].dt_txt}</p>
+        //         <img src="${iconURL}">
+        //         <p class="card-text">Temp: ${Number.parseFloat(temp).toPrecision(4)}</p>
+        //         <p class="card-text">Humidity: ${response.list[i].main.humidity}</p>
+        //     </div>
+        // </div>`)
+        //             }
+
+                })
+        })
 })
-
-var fiveDayURL = `https://api.openweathermap.org/data/2.5/forecast?q=${city}&exclude=hourly&appid=${apiKey}`
-$.ajax({
-    url: fiveDayURL,
-    method: "GET"
-    })
-
-    .then(function (response) {
-        
-        // api.openweathermap.org/data/2.5/forecast/daily?q={city name}&cnt={cnt}&appid={your api key}
-        var iconURL = `http://openweathermap.org/img/wn/${response.list[0].weather[0].icon}@2x.png`;
-        var temp = (response.list[0].main.temp - 273.15) * 1.80 + 32;
-
-        // for loop to create Daily Weather Cards...
-        // TODO: Bootstrap Grid System, or Flexbox layout...
-        // Template literals with multiple lines! https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Template_literals
-        for(var i = 0; i < 40; i+=8){
-        $(".container-5-day").append(`
-        <div class="card">
-            <div class="card-body">
-                <p class="card-title">${response.list[i].dt_txt}</p>
-                <img src="${iconURL}">
-                <p class="card-text">Temp: ${Number.parseFloat(temp).toPrecision(4)}</p>
-                <p class="card-text">Humidity: ${response.list[i].main.humidity}</p>
-            </div>
-        </div>`)
-        }
-    
-    })
-})
-})
-
