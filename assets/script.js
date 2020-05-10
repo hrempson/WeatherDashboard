@@ -126,15 +126,7 @@ function addSearchHistory(city) {
         searchHistory.push(city);
         drawHistoryItem(city)
         saveSearchHistory();
-    } else {
-      // Sort last search to first position.
-      console.log(`searchHistory Array: ${searchHistory}`);
-      var newSearchHistory = searchHistory.filter(word => word != city);
-      console.log(`newSearchHistory Array: ${newSearchHistory}`);
-      newSearchHistory.unshift(city);
-      console.log(`newSearchHistory unshifted Array: ${newSearchHistory}`);
-      searchHistory = newSearchHistory;
-    }
+    } 
 }
 
 // Save search history to local storage

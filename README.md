@@ -1,4 +1,8 @@
 # WeatherDashboard
+This project was designed to solve for the user story below. 
+The weather data used in this program is pulled from the OpenWeather API. 
+This web page meets acceptance criteria also listed below. 
+
 ## User Story
 
 ```
