@@ -33,3 +33,13 @@
 .day{
     display: inline-block;
 }
+.container-5-day {
+    text-align: center;
+} 
+.row{
+    margin-left: 0px !important;
+}
+/* .card {
+    padding-right: 50px !important;
+    margin-right: 10px !important;
+} */
